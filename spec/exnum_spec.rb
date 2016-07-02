@@ -13,9 +13,9 @@ class User2 < User
 end
 class User3 < User
   exnum role: {
-    guest:   {val: 10, label: :red,   selectable: true },
-    general: {val: 20, label: :green, selectable: true },
-    admin:   {val: 30, label: :blue,  selectable: false},
+    guest:   {val: 10, label: :red },
+    general: {val: 20, label: :green, permission: false },
+    admin:   {val: 30, label: :blue,  permission: true},
   }
 end
 class User4 < User3
@@ -67,12 +67,12 @@ describe Exnum do
     end
     it "should provide parameter hash" do
       expect(User3.role_labels).to eq({"guest" => :red, "general" => :green, "admin" => :blue})
-      expect(User3.role_selectables).to eq({"guest" => true, "general" => true, "admin" => false})
+      expect(User3.role_permissions).to eq({"guest" => nil, "general" => false, "admin" => true})
     end
     it "should provide parameter by its instance" do
-      user = User3.new(role: :guest)
-      expect(user.role_label).to eq(:red)
-      expect(user.role_selectable).to eq(true)
+      user = User3.new(role: :general)
+      expect(user.role_label).to eq(:green)
+      expect(user.role_permission).to eq(false)
     end
   end
 
@@ -89,12 +89,12 @@ describe Exnum do
     end
     it "should provide parameter hash" do
       expect(User4.role_labels).to eq({"guest" => :red, "general" => :green, "admin" => :blue})
-      expect(User4.role_selectables).to eq({"guest" => true, "general" => true, "admin" => false})
+      expect(User4.role_permissions).to eq({"guest" => nil, "general" => false, "admin" => true})
     end
     it "should provide parameter by its instance" do
-      user = User4.new(role: :guest)
-      expect(user.role_label).to eq(:red)
-      expect(user.role_selectable).to eq(true)
+      user = User4.new(role: :general)
+      expect(user.role_label).to eq(:green)
+      expect(user.role_permission).to eq(false)
     end
   end
 
