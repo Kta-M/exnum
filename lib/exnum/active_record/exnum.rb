@@ -37,14 +37,14 @@ module ActiveRecord
     #--------------------------------------------------------------------------
 
     private
-    def extract_enums(name, values)
+    def extract_enums(_name, values)
       values.inject({}) do |ret, (field, value)|
         ret[field.to_sym] = (value.kind_of?(Hash) ? value[:val] : value)
         ret
       end
     end
 
-    def extract_params(name, values)
+    def extract_params(_name, values)
       values.inject({}) do |ret, (field, value)|
         if value.kind_of?(Hash)
           ret[field.to_sym] = value.reject{|k, _| k == :val}
@@ -55,8 +55,8 @@ module ActiveRecord
 
     def enum_i18n(definitions)
       klass = self
-      enum_prefix = definitions.delete(:_prefix)
-      enum_suffix = definitions.delete(:_suffix)
+      definitions.delete(:_prefix)
+      definitions.delete(:_suffix)
 
       definitions.each do |name, values|
 
@@ -76,8 +76,11 @@ module ActiveRecord
         detect_enum_conflict!(name, method_name, false)
         klass.send(:define_method, method_name) do
           status = self.send(name)
-          return if status.nil?
-          klass.send(:i18n_string, klass, name, status)
+          if status.nil?
+            nil
+          else
+            klass.send(:i18n_string, klass, name, status)
+          end
         end
       end
     end
