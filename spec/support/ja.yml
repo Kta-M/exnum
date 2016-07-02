@@ -1,0 +1,15 @@
+ja:
+  activerecord:
+    enum:
+      user1:
+        role: &role
+          guest:   ゲスト
+          general: 一般ユーザー
+          admin:   管理者
+      user2:
+        role:
+          <<: *role
+      user3:
+        role:
+          <<: *role
+

@@ -1,5 +1,5 @@
+require 'active_record' unless defined? ActiveRecord
 require "exnum/version"
+require "exnum/active_record/exnum"
 
-module Exnum
-  # Your code goes here...
-end
+ActiveRecord::Enum.prepend(ActiveRecord::Exnum)
