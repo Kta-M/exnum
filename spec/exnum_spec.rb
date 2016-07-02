@@ -92,6 +92,9 @@ describe Exnum do
       expect(User4.role_permissions).to eq({"guest" => nil, "general" => false, "admin" => true})
     end
     it "should provide parameter by its instance" do
+      user = User4.new(role: :guest)
+      expect(user.role_label).to eq(:red)
+      expect(user.role_permission).to eq(nil)
       user = User4.new(role: :general)
       expect(user.role_label).to eq(:green)
       expect(user.role_permission).to eq(false)
