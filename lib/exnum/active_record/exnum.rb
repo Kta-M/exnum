@@ -76,11 +76,7 @@ module ActiveRecord
         detect_enum_conflict!(name, method_name, false)
         klass.send(:define_method, method_name) do
           status = self.send(name)
-          if status.nil?
-            nil
-          else
-            klass.send(:i18n_string, klass, name, status)
-          end
+          status.nil? ? nil : klass.send(:i18n_string, klass, name, status)
         end
       end
     end
