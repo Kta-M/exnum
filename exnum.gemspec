@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Kta-M"]
   spec.email         = ["mohri1219@gmail.com"]
 
-  spec.summary       = %q{Enum Extention for Rails}
-  spec.description   = %q{Enum Extention for Rails}
+  spec.summary       = %q{Enum extention for Rails}
+  spec.description   = %q{Exnum is enum extention for Rails. This gem extends enum about i18n and associated parameters.}
   spec.homepage      = "https://github.com/Kta-M/exnum"
   spec.license       = "MIT"
 
