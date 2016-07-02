@@ -1,5 +1,9 @@
 # Exnum
 
+[![Build Status](https://travis-ci.org/Kta-M/exnum.svg?branch=master)](https://travis-ci.org/Kta-M/exnum)
+[![Code Climate](https://codeclimate.com/github/Kta-M/exnum/badges/gpa.svg)](https://codeclimate.com/github/Kta-M/exnum)
+[![Test Coverage](https://codeclimate.com/github/Kta-M/exnum/badges/coverage.svg)](https://codeclimate.com/github/Kta-M/exnum/coverage)
+
 Enum Extention for Rails.
 
 ## Installation

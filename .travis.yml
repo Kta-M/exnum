@@ -3,3 +3,4 @@ language: ruby
 rvm:
   - 2.3.1
 before_install: gem install bundler -v 1.12.5
+script: CODECLIMATE_REPO_TOKEN=9eff3c4d9a268cc72972edde460103ef26b162565dafa64ef5b86649fd43427f bundle exec rake
