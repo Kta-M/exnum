@@ -62,6 +62,8 @@ describe Exnum do
       expect(User3.roles_i18n).to eq({"guest" => "ゲスト", "general" => "一般ユーザー", "admin" => "管理者"})
     end
     it "should provide i18n string by its instance" do
+      user = User3.new
+      expect(user.role_i18n).to eq(nil)
       user = User3.new(role: :guest)
       expect(user.role_i18n).to eq("ゲスト")
     end
@@ -70,6 +72,12 @@ describe Exnum do
       expect(User3.role_permissions).to eq({"guest" => nil, "general" => false, "admin" => true})
     end
     it "should provide parameter by its instance" do
+      user = User3.new
+      expect(user.role_label).to eq(nil)
+      expect(user.role_permission).to eq(nil)
+      user = User3.new(role: :guest)
+      expect(user.role_label).to eq(:red)
+      expect(user.role_permission).to eq(nil)
       user = User3.new(role: :general)
       expect(user.role_label).to eq(:green)
       expect(user.role_permission).to eq(false)
@@ -84,6 +92,8 @@ describe Exnum do
       expect(User4.roles_i18n).to eq({"guest" => "ゲスト", "general" => "一般ユーザー", "admin" => "管理者"})
     end
     it "should provide i18n string by its instance" do
+      user = User4.new
+      expect(user.role_i18n).to eq(nil)
       user = User4.new(role: :guest)
       expect(user.role_i18n).to eq("ゲスト")
     end
@@ -92,6 +102,9 @@ describe Exnum do
       expect(User4.role_permissions).to eq({"guest" => nil, "general" => false, "admin" => true})
     end
     it "should provide parameter by its instance" do
+      user = User4.new
+      expect(user.role_label).to eq(nil)
+      expect(user.role_permission).to eq(nil)
       user = User4.new(role: :guest)
       expect(user.role_label).to eq(:red)
       expect(user.role_permission).to eq(nil)
