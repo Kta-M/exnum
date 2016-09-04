@@ -3,3 +3,7 @@ require "exnum/version"
 require "exnum/active_record/exnum"
 
 ActiveRecord::Enum.prepend(ActiveRecord::Exnum)
+
+class ActiveRecord::Base
+  extend ActiveRecord::Enum
+end

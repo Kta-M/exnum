@@ -20,7 +20,7 @@ module ActiveRecord
 
     def exnum(definitions)
       divided_definitions = definitions.inject({enums: {}, params: {}}) do |ret, (name, values)|
-        if !self.column_names.include?(name.to_s) || !values.kind_of?(Hash)
+        if !values.kind_of?(Hash)
           ret[:enums][name]  = values
         else
           ret[:enums][name]  = extract_enums(name, values)
