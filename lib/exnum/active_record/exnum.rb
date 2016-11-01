@@ -87,7 +87,7 @@ module ActiveRecord
 
     def enum_param(definitions)
       klass = self
-      klass.defined_params = definitions
+      klass.defined_params.merge!(definitions)
 
       definitions.each do |name, values|
         param_names = values.values.map(&:keys).flatten.uniq
