@@ -1,7 +1,9 @@
-ActiveRecord::Base.configurations = {'test' => {adapter: 'sqlite3', database: ':memory:'}}
-ActiveRecord::Base.establish_connection :test
+ActiveRecord::Base.establish_connection(
+  adapter: 'sqlite3',
+  database: ':memory:'
+)
 
-class CreateAllTables < ActiveRecord::Migration
+class CreateAllTables < ActiveRecord::Migration[5.2]
   def self.up
     create_table(:users) do |t|
       t.string  :name
