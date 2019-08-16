@@ -5,22 +5,6 @@ require 'spec_helper'
 class User < ActiveRecord::Base
 end
 
-class User1 < User
-  exnum role: [:guest, :general, :admin]
-end
-class User2 < User
-  exnum role: {guest: 10, general: 20, admin: 30}
-end
-class User3 < User
-  exnum role: {
-    guest:   {val: 10, label: :red },
-    general: {val: 20, label: :green, permission: false },
-    admin:   {val: 30, label: :blue,  permission: true},
-  }
-end
-class User4 < User3
-end
-
 #------------------------------------------------------------------------------
 # test code
 describe Exnum do
@@ -29,6 +13,10 @@ describe Exnum do
   end
 
   context "model setup exnum with array" do
+    class User1 < User
+      exnum role: [:guest, :general, :admin]
+    end
+
     it "should use as well as enum" do
       expect(User1.roles).to eq({"guest" => 0, "general" => 1, "admin" => 2})
     end
@@ -42,6 +30,10 @@ describe Exnum do
   end
 
   context "model setup exnum with hash" do
+    class User2 < User
+      exnum role: {guest: 10, general: 20, admin: 30}
+    end
+
     it "should use as well as enum" do
       expect(User2.roles).to eq({"guest" => 10, "general" => 20, "admin" => 30})
     end
@@ -55,6 +47,14 @@ describe Exnum do
   end
 
   context "model setup exnum with hash including parameters" do
+    class User3 < User
+      exnum role: {
+        guest:   {val: 10, label: :red },
+        general: {val: 20, label: :green, permission: false},
+        admin:   {val: 30, label: :blue,  permission: true},
+      }
+    end
+
     it "should use as well as enum" do
       expect(User3.roles).to eq({"guest" => 10, "general" => 20, "admin" => 30})
     end
@@ -85,6 +85,14 @@ describe Exnum do
   end
 
   context "model inherit a model using exnum" do
+    class User4 < User
+      exnum role: {
+        guest:   {val: 10, label: :red },
+        general: {val: 20, label: :green, permission: false},
+        admin:   {val: 30, label: :blue,  permission: true},
+      }
+    end
+
     it "should use as well as enum" do
       expect(User4.roles).to eq({"guest" => 10, "general" => 20, "admin" => 30})
     end
