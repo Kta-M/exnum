@@ -85,12 +85,7 @@ describe Exnum do
   end
 
   context "model inherit a model using exnum" do
-    class User4 < User
-      exnum role: {
-        guest:   {val: 10, label: :red },
-        general: {val: 20, label: :green, permission: false},
-        admin:   {val: 30, label: :blue,  permission: true},
-      }
+    class User4 < User3
     end
 
     it "should use as well as enum" do

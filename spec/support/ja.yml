@@ -12,8 +12,3 @@ ja:
       user3:
         role:
           <<: *role
-      user4:
-        role:
-          <<: *role
-
-
