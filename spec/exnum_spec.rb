@@ -28,6 +28,12 @@ def test_i18n(klass)
   end
 end
 
+def test_i18n_with_condition(klass)
+  it "should provide i18n hash with condition block" do
+    expect(klass.roles_i18n{|p| p[:selectable]}).to eq({"guest" => "ゲスト", "general" => "一般ユーザー"})
+  end
+end
+
 def test_prefix(klass)
   it "should be able to use enum methods with prefix" do
     user = klass.new(role: :guest)
@@ -55,6 +61,12 @@ def test_params(klass)
     expect(user.role_val).to eq(1)
     expect(user.role_label).to eq(:green)
     expect(user.role_permission).to eq(false)
+  end
+end
+
+def test_params_with_condition(klass)
+  it "should provide parameter hash with condition block" do
+    expect(klass.role_labels{|p| p[:selectable]}).to eq({"guest" => :red, "general" => :green})
   end
 end
 
@@ -131,7 +143,9 @@ describe Exnum do
 
     test_enum(User31)
     test_i18n(User31)
+    test_i18n_with_condition(User31)
     test_params(User31)
+    test_params_with_condition(User31)
   end
 
   context "model setup exnum with hash including parameters and prefix" do
@@ -145,7 +159,9 @@ describe Exnum do
 
     test_enum(User32)
     test_i18n(User32)
+    test_i18n_with_condition(User32)
     test_params(User32)
+    test_params_with_condition(User32)
     test_prefix(User32)
   end
 
@@ -155,6 +171,8 @@ describe Exnum do
 
     test_enum(User33)
     test_i18n(User33)
+    test_i18n_with_condition(User33)
     test_params(User33)
+    test_params_with_condition(User33)
   end
 end

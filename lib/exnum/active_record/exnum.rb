@@ -76,7 +76,8 @@ module ActiveRecord
       detect_enum_conflict!(name, method_name, true)
       klass.singleton_class.send(:define_method, method_name) do |&block|
         i18n_hash = ActiveSupport::HashWithIndifferentAccess.new
-        values.each_with_object(i18n_hash) do |(enum_name, _value), ret|
+        values.each_with_object(i18n_hash) do |(enum_name, value), ret|
+          next if block.present? && !block.call(value)
           ret[enum_name] = i18n_string(klass, name, enum_name)
         end
       end
@@ -120,6 +121,7 @@ module ActiveRecord
       klass.singleton_class.send(:define_method, method_name) do |&block|
         param_hash = ActiveSupport::HashWithIndifferentAccess.new
         values.each_with_object(param_hash) do |(enum_name, params), ret|
+          next if block.present? && !block.call(params)
           ret[enum_name] = params[param_name]
         end
       end
