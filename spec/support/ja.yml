@@ -1,14 +1,23 @@
 ja:
   activerecord:
     enum:
-      user1:
+      user11:
         role: &role
           guest:   ゲスト
           general: 一般ユーザー
           admin:   管理者
-      user2:
+      user12:
         role:
           <<: *role
-      user3:
+      user21:
+        role:
+          <<: *role
+      user22:
+        role:
+          <<: *role
+      user31:
+        role:
+          <<: *role
+      user32:
         role:
           <<: *role

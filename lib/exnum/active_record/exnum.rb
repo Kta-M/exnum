@@ -21,48 +21,51 @@ module ActiveRecord
     #--------------------------------------------------------------------------
 
     def exnum(definitions)
-      settings = {enums: {}, params: {}}
-      settings = definitions.each_with_object(settings) do |(name, values), ret|
-        if !values.kind_of?(Hash)
-          ret[:enums][name]  = values
-        else
-          ret[:enums][name]  = extract_enums(name, values)
-          ret[:params][name] = extract_params(name, values)
+      enum_definitions = definitions.each_with_object({}) do |(name, values), ret|
+        ret[name] = extract_enums(values)
+      end
+      enum(enum_definitions)
+
+      pram_definitions = definitions.each_with_object({}) do |(name, values), ret|
+        next if %i[_prefix _suffix].include?(name)
+
+        ret[name] = extract_params(values)
+        self.send(name.to_s.pluralize).each do |k, v|
+          ret[name][k.to_sym] ||= {}
+          ret[name][k.to_sym][:val] = v
         end
       end
 
-      enum(settings[:enums])
-      enum_i18n(settings[:enums])
-      enum_param(settings[:params])
+      enum_i18n(pram_definitions)
+      enum_param(pram_definitions)
     end
 
     #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     private
-    def extract_enums(_name, values)
-      values.inject({}) do |ret, (field, value)|
+    def extract_enums(values)
+      return values unless values.kind_of?(Hash)
+
+      values.each_with_object({}) do |(field, value), ret|
         ret[field.to_sym] = (value.kind_of?(Hash) ? value[:val] : value)
-        ret
       end
     end
 
-    def extract_params(_name, values)
+    def extract_params(values)
+      return {} unless values.kind_of?(Hash)
+
       values.each_with_object({}) do |(field, value), ret|
-        if value.kind_of?(Hash)
-          ret[field.to_sym] = value.reject{|k, _| k == :val}
-        end
+        next unless value.kind_of?(Hash)
+        ret[field.to_sym] = value
       end
     end
 
     #--------------------------------------------------------------------------
 
     def enum_i18n(definitions)
-      definitions.delete(:_prefix)
-      definitions.delete(:_suffix)
-
       definitions.each do |name, values|
         enum_i18n_class_method(name, values)
-        enum_i18n_instance_method(name, values)
+        enum_i18n_instance_method(name)
       end
     end
 
@@ -71,7 +74,7 @@ module ActiveRecord
       klass = self
       method_name = "#{name.to_s.pluralize}_i18n"
       detect_enum_conflict!(name, method_name, true)
-      klass.singleton_class.send(:define_method, method_name) do
+      klass.singleton_class.send(:define_method, method_name) do |&block|
         i18n_hash = ActiveSupport::HashWithIndifferentAccess.new
         values.each_with_object(i18n_hash) do |(enum_name, _value), ret|
           ret[enum_name] = i18n_string(klass, name, enum_name)
@@ -80,7 +83,7 @@ module ActiveRecord
     end
 
     # define instance method which returns current i18n string of the instance
-    def enum_i18n_instance_method(name, values)
+    def enum_i18n_instance_method(name)
       klass = self
       method_name = "#{name}_i18n"
       detect_enum_conflict!(name, method_name, false)
@@ -114,7 +117,7 @@ module ActiveRecord
       klass = self
       method_name = "#{name}_#{param_name.to_s.pluralize}"
       detect_enum_conflict!(name, method_name, true)
-      klass.singleton_class.send(:define_method, method_name) do
+      klass.singleton_class.send(:define_method, method_name) do |&block|
         param_hash = ActiveSupport::HashWithIndifferentAccess.new
         values.each_with_object(param_hash) do |(enum_name, params), ret|
           ret[enum_name] = params[param_name]
