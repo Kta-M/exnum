@@ -34,6 +34,18 @@ def test_i18n_with_condition(klass)
   end
 end
 
+def test_for_select(klass)
+  it "should provide array for select box" do
+    expect(klass.roles_for_select).to eq([["ゲスト", "guest"], ["一般ユーザー", "general"], ["管理者", "admin"]])
+  end
+end
+
+def test_for_select_with_condition(klass)
+  it "should provide array for select box with condition block" do
+    expect(klass.roles_for_select{|p| p[:selectable]}).to eq([["ゲスト", "guest"], ["一般ユーザー", "general"]])
+  end
+end
+
 def test_prefix(klass)
   it "should be able to use enum methods with prefix" do
     user = klass.new(role: :guest)
@@ -84,6 +96,7 @@ describe Exnum do
 
     test_enum(User11)
     test_i18n(User11)
+    test_for_select(User11)
   end
 
   context "model setup exnum with array and prefix" do
@@ -93,6 +106,7 @@ describe Exnum do
 
     test_enum(User12)
     test_i18n(User12)
+    test_for_select(User12)
     test_prefix(User12)
   end
 
@@ -102,6 +116,7 @@ describe Exnum do
 
     test_enum(User13)
     test_i18n(User13)
+    test_for_select(User13)
   end
 
   context "model setup exnum with hash" do
@@ -111,6 +126,7 @@ describe Exnum do
 
     test_enum(User21)
     test_i18n(User21)
+    test_for_select(User21)
   end
 
   context "model setup exnum with hash and prefix" do
@@ -120,6 +136,7 @@ describe Exnum do
 
     test_enum(User22)
     test_i18n(User22)
+    test_for_select(User22)
     test_prefix(User22)
   end
 
@@ -130,6 +147,7 @@ describe Exnum do
 
     test_enum(User23)
     test_i18n(User23)
+    test_for_select(User23)
   end
 
   context "model setup exnum with hash including parameters" do
@@ -144,6 +162,8 @@ describe Exnum do
     test_enum(User31)
     test_i18n(User31)
     test_i18n_with_condition(User31)
+    test_for_select(User31)
+    test_for_select_with_condition(User31)
     test_params(User31)
     test_params_with_condition(User31)
   end
@@ -160,6 +180,8 @@ describe Exnum do
     test_enum(User32)
     test_i18n(User32)
     test_i18n_with_condition(User32)
+    test_for_select(User32)
+    test_for_select_with_condition(User32)
     test_params(User32)
     test_params_with_condition(User32)
     test_prefix(User32)
@@ -172,6 +194,8 @@ describe Exnum do
     test_enum(User33)
     test_i18n(User33)
     test_i18n_with_condition(User33)
+    test_for_select(User33)
+    test_for_select_with_condition(User33)
     test_params(User33)
     test_params_with_condition(User33)
   end
