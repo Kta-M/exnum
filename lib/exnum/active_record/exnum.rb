@@ -55,8 +55,8 @@ module ActiveRecord
     def extract_params(values)
       return {} unless values.kind_of?(Hash)
 
-      values.each_with_object({}) do |(field, value), ret|
-        next unless value.kind_of?(Hash)
+      target_values = values.select{|_field, value| value.kind_of?(Hash)}
+      target_values.each_with_object({}) do |(field, value), ret|
         ret[field.to_sym] = value
       end
     end
