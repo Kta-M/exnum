@@ -38,6 +38,7 @@ module ActiveRecord
 
       enum_i18n(pram_definitions)
       enum_param(pram_definitions)
+      enum_for_select(pram_definitions)
     end
 
     #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -54,8 +55,8 @@ module ActiveRecord
     def extract_params(values)
       return {} unless values.kind_of?(Hash)
 
-      values.each_with_object({}) do |(field, value), ret|
-        next unless value.kind_of?(Hash)
+      target_values = values.select{|_field, value| value.kind_of?(Hash)}
+      target_values.each_with_object({}) do |(field, value), ret|
         ret[field.to_sym] = value
       end
     end
@@ -137,6 +138,29 @@ module ActiveRecord
         defined_params[name][status.to_sym][param_name]
       end
     end
+
+    #--------------------------------------------------------------------------
+
+    def enum_for_select(definitions)
+      definitions.each do |name, values|
+        param_names = values.values.map(&:keys).flatten.uniq
+        param_names.each do |param_name|
+          enum_for_select_class_method(name, values, param_name)
+        end
+      end
+    end
+
+    # define class methods which returns the array for select box
+    def enum_for_select_class_method(name, values, param_name)
+      klass = self
+      method_name = "#{name.to_s.pluralize}_for_select"
+      detect_enum_conflict!(name, method_name, true)
+      klass.singleton_class.send(:define_method, method_name) do |&block|
+        i18n_hash = klass.send("#{name.to_s.pluralize}_i18n", &block)
+        i18n_hash.to_a.map(&:reverse)
+      end
+    end
+
   end
 end
 
