@@ -100,7 +100,7 @@ You can use it like this:
 ```
 
 ### enum
-Of cause, you can use methods provided by `enum`.
+Of course, you can use methods provided by `enum`.
 ```ruby
 class User < ActiveRecord::Base
   exnum role: [:guest, :general, :admin]
