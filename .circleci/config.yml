@@ -10,11 +10,8 @@ jobs:
       - image: 'cimg/ruby:3.1.1'
     steps:
       - checkout
-      - run:
-          name: install dependencies
-          command: |
-            bundle config set --local path 'vendor/bundle'
-            bundle install --jobs=4 --retry=3
+      - ruby/install-deps:
+        bundler-version: 2.3.3
 
   test:
     docker:
@@ -22,11 +19,8 @@ jobs:
     parallelism: 3
     steps:
       - checkout
-      - run:
-          name: install dependencies
-          command: |
-            bundle config set --local path 'vendor/bundle'
-            bundle install --jobs=4 --retry=3
+      - ruby/install-deps:
+        bundler-version: 2.3.3
       - ruby/rspec-test
 
 workflows:
