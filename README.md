@@ -2,8 +2,6 @@
 
 [![Gem Version](https://badge.fury.io/rb/exnum.svg)](https://badge.fury.io/rb/exnum)
 [![CircleCI](https://circleci.com/gh/Kta-M/exnum.svg?style=svg)](https://circleci.com/gh/Kta-M/exnum)
-[![Maintainability](https://api.codeclimate.com/v1/badges/d8d694f943658d8a5506/maintainability)](https://codeclimate.com/github/Kta-M/exnum/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/d8d694f943658d8a5506/test_coverage)](https://codeclimate.com/github/Kta-M/exnum/test_coverage)
 
 Exnum is enum extention for Rails.
 This gem extends enum about i18n, associated parameters, and array for select box.
