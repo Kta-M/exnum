@@ -24,7 +24,7 @@ module ActiveRecord
       enum_definitions = definitions.each_with_object({}) do |(name, values), ret|
         ret[name] = extract_enums(values)
       end
-      enum(enum_definitions)
+      enum(**enum_definitions)
 
       pram_definitions = definitions.each_with_object({}) do |(name, values), ret|
         next if %i[_prefix _suffix].include?(name)
