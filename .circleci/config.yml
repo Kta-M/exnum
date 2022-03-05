@@ -10,7 +10,11 @@ jobs:
       - image: 'cimg/ruby:3.1.1'
     steps:
       - checkout
-      - ruby/install-deps
+      - run:
+          name: install dependencies
+          command: |
+            bundle config set --local path 'vendor/bundle'
+            bundle install --jobs=4 --retry=3
 
   test:
     docker:
