@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps:
-        bundler-version: 2.3.3
+          bundler-version: 2.3.3
 
   test:
     docker:
@@ -20,7 +20,7 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps:
-        bundler-version: 2.3.3
+          bundler-version: 2.3.3
       - ruby/rspec-test
 
 workflows:
