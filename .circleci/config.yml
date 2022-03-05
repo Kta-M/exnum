@@ -15,10 +15,14 @@ jobs:
   test:
     docker:
       - image: 'cimg/ruby:3.1.1'
-    parallelism: 1
+    parallelism: 3
     steps:
       - checkout
-      - ruby/install-deps
+      - run:
+          name: install dependencies
+          command: |
+            bundle config set --local path 'vendor/bundle'
+            bundle install --jobs=4 --retry=3
       - ruby/rspec-test
 
 workflows:
