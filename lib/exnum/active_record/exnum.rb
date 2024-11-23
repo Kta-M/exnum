@@ -1,5 +1,6 @@
 module ActiveRecord
   module Exnum
+    OPTIONS = %i[_prefix _suffix]
 
     def self.prepended(base)
       base.singleton_class.class_eval { self.prepend(ClassMethods) }
@@ -21,13 +22,11 @@ module ActiveRecord
     #--------------------------------------------------------------------------
 
     def exnum(definitions)
-      enum_definitions = definitions.each_with_object({}) do |(name, values), ret|
-        ret[name] = extract_enums(values)
-      end
-      enum(**enum_definitions)
+      enum_num, enum_values, enum_options = extract_enum_args(definitions)
+      enum(enum_num, enum_values, **enum_options)
 
       pram_definitions = definitions.each_with_object({}) do |(name, values), ret|
-        next if %i[_prefix _suffix].include?(name)
+        next if OPTIONS.include?(name)
 
         ret[name] = extract_params(values)
         self.send(name.to_s.pluralize).each do |k, v|
@@ -44,7 +43,25 @@ module ActiveRecord
     #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     private
-    def extract_enums(values)
+
+    def extract_enum_args(definitions)
+      enum_name = nil
+      enum_values = nil
+      enum_options = {}
+
+      definitions.each do |name, value|
+        if OPTIONS.include?(name)
+          enum_options[name.to_s.delete_prefix('_').to_sym] = value
+        else
+          enum_name = name
+          enum_values = extract_enum_values(value)
+        end
+      end
+
+      [enum_name, enum_values, enum_options]
+    end
+
+    def extract_enum_values(values)
       return values unless values.kind_of?(Hash)
 
       values.each_with_object({}) do |(field, value), ret|
